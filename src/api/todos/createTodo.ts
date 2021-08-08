@@ -28,6 +28,9 @@ export const createTodo = async (ctx: Context) => {
     await user.save();
 
     ctx.status = 201;
+    ctx.body = {
+        todo
+    };
 
     return;
 };

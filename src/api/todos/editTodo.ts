@@ -31,7 +31,10 @@ export const editTodo = async (ctx: Context) => {
 
         await todo.save();
 
-        ctx.status = 204;
+        ctx.status = 200;
+        ctx.body = {
+            todo
+        };
 
         return;
     } catch {
