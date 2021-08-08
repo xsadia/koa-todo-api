@@ -8,7 +8,16 @@ export const completeTodo = async (ctx: Context) => {
     try {
         const todo = await Todo.findOne({ _id: id });
 
-        if (!todo?.owner.equals(loggedUser._id)) {
+        if (!todo) {
+            ctx.status = 404;
+            ctx.body = {
+                error: 'Todo not found'
+            };
+
+            return;
+        }
+
+        if (!todo.owner.equals(loggedUser._id)) {
             ctx.status = 401;
             ctx.body = {
                 error: 'You don\'t have permission to complete this todo'
@@ -32,6 +41,11 @@ export const completeTodo = async (ctx: Context) => {
         ctx.status = 204;
         return;
     } catch {
-        ctx.throw(404, 'Todo not found');
+        ctx.status = 404;
+        ctx.body = {
+            error: 'Todo not found'
+        };
+
+        return;
     }
 };

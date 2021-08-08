@@ -27,10 +27,7 @@ export const deleteUser = async (ctx: Context) => {
 
     await user.delete();
 
-    ctx.status = 200;
-    ctx.body = {
-        deleted: 'OK'
-    };
+    ctx.status = 204;
 
     return;
 };

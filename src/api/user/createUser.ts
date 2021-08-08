@@ -38,9 +38,5 @@ export const createUser = async (ctx: Context) => {
 
     ctx.status = 201;
 
-    ctx.body = {
-        created: 'OK'
-    };
-
     return;
 };
