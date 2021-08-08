@@ -7,10 +7,19 @@ import { sign } from "jsonwebtoken";
 export const authUser = async (ctx: Context) => {
     const { email, password } = ctx.request.body;
 
+    if (!email || !password) {
+        ctx.status = 401;
+        ctx.body = {
+            error: 'E-mail and password are required'
+        };
+
+        return;
+    }
+
     const user = await User.findOne({ email });
 
     if (!user) {
-        ctx.status = 400;
+        ctx.status = 401;
         ctx.body = {
             error: 'Incorrect e-mail/password combination'
         };
@@ -21,7 +30,7 @@ export const authUser = async (ctx: Context) => {
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-        ctx.status = 400;
+        ctx.status = 401;
         ctx.body = {
             error: 'Incorrect e-mail/password combination'
         };

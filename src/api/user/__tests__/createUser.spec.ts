@@ -1,15 +1,9 @@
-import { connect, connection, disconnect } from 'mongoose';
+import { connection, disconnect } from 'mongoose';
 import request from 'supertest';
 import app from '../../../app';
+import { connectTestDB } from '../../../mongodb';
 
-beforeAll(async () => {
-    await connect('mongodb://localhost:27017/todos_koa_tests', {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
-        useFindAndModify: false
-    });
-});
+beforeAll(connectTestDB);
 
 beforeEach(async () => {
     await connection.db.dropDatabase();

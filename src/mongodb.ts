@@ -16,3 +16,12 @@ export const connectDB = async () => {
         console.log("mongoose is connected");
     });
 };
+
+export const connectTestDB = async () => {
+    await connect('mongodb://localhost:27017/todos_koa_tests', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+        useFindAndModify: false
+    });
+};
