@@ -46,7 +46,16 @@ export const createUser = async (ctx: Context) => {
 
     await user.save();
 
+    const userWithoutPassword = {
+        _id: user._id,
+        email: user.email,
+        username: user.username,
+    };
+
     ctx.status = 201;
+    ctx.body = {
+        user: userWithoutPassword
+    };
 
     return;
 };

@@ -29,6 +29,9 @@ it(' should create user if credentials unique', async () => {
         .post('/users')
         .send(testUser);
     expect(response.status).toBe(201);
+    expect(response.body.user.email).toBe(testUser.email);
+    expect(response.body.user.username).toBe(testUser.username);
+    expect(response.body.user._id).toBeDefined();
 });
 
 it('should return error if email is not unique', async () => {
