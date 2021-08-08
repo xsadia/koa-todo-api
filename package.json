@@ -6,26 +6,32 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "tsc",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "test": "jest"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "jest": "^27.0.6",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-convert": "^2.0.0",
     "koa-cors": "^0.0.16",
     "koa-router": "^10.0.0",
-    "mongoose": "^5.13.5"
+    "mongoose": "^5.13.5",
+    "supertest": "^6.1.4"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/jest": "^26.0.24",
     "@types/jsonwebtoken": "^8.5.4",
     "@types/koa": "^2.13.4",
     "@types/koa-bodyparser": "^4.3.3",
     "@types/koa-convert": "^1.2.3",
     "@types/koa-cors": "^0.0.2",
     "@types/koa-router": "^7.4.4",
+    "@types/supertest": "^2.0.11",
+    "ts-jest": "^27.0.4",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.3.5"
   }

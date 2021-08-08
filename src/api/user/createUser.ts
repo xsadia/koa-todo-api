@@ -4,6 +4,16 @@ import { hash } from 'bcryptjs';
 
 export const createUser = async (ctx: Context) => {
     const { email, username, password } = ctx.request.body;
+
+    if (!email || !username || !password) {
+        ctx.status = 400;
+        ctx.body = {
+            error: 'E-mail, username and password are required'
+        };
+
+        return;
+    }
+
     const emailExists = await User.findOne({ email });
 
     if (emailExists) {
