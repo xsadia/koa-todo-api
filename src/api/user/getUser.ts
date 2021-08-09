@@ -9,6 +9,15 @@ export const getUser = async (ctx: Context) => {
 
         const user = await User.findOne({ _id: id });
 
+        if (!user) {
+            ctx.status = 404;
+            ctx.body = {
+                error: 'User not found'
+            };
+
+            return;
+        }
+
         if (!user?._id.equals(loggedUser._id)) {
             ctx.status = 401;
             ctx.body = {
