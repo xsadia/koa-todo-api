@@ -21,4 +21,4 @@ todoRouter.patch('/:id/complete', ensureAuthenticated, completeTodo);
 
 todoRouter.patch('/:id', ensureAuthenticated, editTodo);
 
-todoRouter.delete('/:id', ensureAuthenticated, deleteTodo);
+todoRouter.delete('/delete/:id', ensureAuthenticated, deleteTodo);
