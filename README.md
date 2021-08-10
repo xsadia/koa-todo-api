@@ -1,5 +1,6 @@
 # Running API
 - yarn to install dependencies
+- yarn dev to run api
 - access api at localhost:3333
 - yarn test to run test suites 
 # API routes
