@@ -158,5 +158,5 @@ Authorization: bearer + jwt
 #### Response
     Status: 204 No Content
     
-## Access graphile interface
+## Access graphiql interface
 `Get /graphql`
