@@ -33,6 +33,10 @@ export const ensureAuthenticated = (ctx: Context, next: Next) => {
 
         return next();
     } catch {
-        ctx.throw(401, 'Invalid JWT token');
+        ctx.status = 401;
+        ctx.body = {
+            error: 'Invalid JWT token'
+        };
+        return;
     }
 };

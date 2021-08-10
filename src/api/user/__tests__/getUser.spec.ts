@@ -151,3 +151,26 @@ it('Should return error if auth header is missing', async () => {
     expect(response.status).toBe(401);
     expect(response.body.error).toBe('Authorization header missing.');
 });
+
+it('Should return error if token is invalid', async () => {
+    const testUser = {
+        email: "test@gmail.com",
+        username: "testUser",
+        password: "123123"
+    };
+
+    const userResponse = await request(app.callback())
+        .post('/users')
+        .send(testUser);
+
+    const response = await request(app.callback())
+        .get(`/users/${userResponse.body.user._id}`)
+        .set({
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: 'token'
+        });
+
+    expect(response.status).toBe(401);
+    expect(response.body.error).toBe('Invalid JWT token');
+});
