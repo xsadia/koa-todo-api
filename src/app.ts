@@ -6,15 +6,16 @@ import graphqlHttp from 'koa-graphql';
 import bodyParser from 'koa-bodyparser';
 import { todoRouter } from './routes/todo.routes';
 import { userRouter } from './routes/users.routes';
-import schema from './graphql/schema';
-import root from './graphql/root';
+import { schema } from './graphql/schema';
+import { ensureAuthenticatedGraphql } from './middlewares/ensureAuthenticatedGraphql';
 
 const app = new Koa();
 const router = new Router();
 
+router.use(ensureAuthenticatedGraphql);
+
 router.all('/graphql', graphqlHttp({
     schema,
-    rootValue: root,
     graphiql: true
 }));
 
@@ -29,8 +30,5 @@ app.use(userRouter.routes())
 
 app.use(router.routes())
     .use(router.allowedMethods());
-
-
-
 
 export default app;
