@@ -13,7 +13,7 @@ export const QueryType = new GraphQLObjectType({
         users: {
             type: GraphQLNonNull(UserConnection),
             args: connectionArgs,
-            resolve: async (_, args) => {
+            resolve: async (root, args, context) => {
                 const data = await UserLoader.loadAll();
                 return connectionFromArray(data, args);
             }
