@@ -8,23 +8,25 @@ export default mutationWithClientMutationId({
     inputFields: {
 
     },
-    mutateAndGetPayload: async () => {
-
-        /* const user = await User.findOne({ _id: id });
+    mutateAndGetPayload: async (_, { user }) => {
 
         if (!user) {
             return {
                 success: false,
-                error: 'User not found'
+                error: 'Permission denied'
             };
         }
 
-        await user.delete();
+        const userTobeDeleted = await User.findOne({ _id: user._id });
+
+        console.log(userTobeDeleted);
+
+        await userTobeDeleted.delete();
 
         return {
             success: true,
             error: null
-        }; */
+        };
     },
     outputFields: {
         success: {
