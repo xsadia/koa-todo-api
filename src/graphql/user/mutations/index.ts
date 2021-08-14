@@ -1,9 +1,9 @@
-import CreateUser from './CreateUserMutation';
-import AuthUser from './AuthUserMutation';
-import DeleteUser from './DeleteUserMutation';
+import CreateUserMutation from './CreateUserMutation';
+import AuthUserMutation from './AuthUserMutation';
+import DeleteUserMutation from './DeleteUserMutation';
 
 export default {
-    CreateUser,
-    AuthUser,
-    DeleteUser
+    CreateUserMutation,
+    AuthUserMutation,
+    DeleteUserMutation
 };
