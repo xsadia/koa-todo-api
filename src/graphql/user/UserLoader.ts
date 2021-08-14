@@ -1,7 +1,8 @@
 import { User } from "../../models/User";
 
 export const loadAll = async () => {
-    const users = await User.find();
+    const users = await User.find()
+        .populate('todos');
 
     return users;
 };

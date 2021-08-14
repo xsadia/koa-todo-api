@@ -25,7 +25,7 @@ export const UserType: any = new GraphQLObjectType({
             type: new GraphQLNonNull(TodoConnection),
             args: connectionArgs,
             resolve: async (user, args, context: any) => {
-                const todos = await TodoLoader.loadAll(context.user._id);
+                const todos = await TodoLoader.loadAll(user._id);
 
                 return connectionFromArray(todos, args);
             }

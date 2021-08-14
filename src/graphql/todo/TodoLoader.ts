@@ -1,3 +1,4 @@
+import { fromGlobalId } from "graphql-relay";
 import { Todo } from "../../models/Todo";
 
 export const loadAll = async (ownerId: string) => {
@@ -7,7 +8,10 @@ export const loadAll = async (ownerId: string) => {
     return todos;
 };
 
-export const load = async (ownerId: string, id: string) => {
+export const load = async (ownerId: string, globalId: string) => {
+
+    const { id } = fromGlobalId(globalId);
+
     const todo = await Todo.findOne({ _id: id })
         .populate('owner');
 

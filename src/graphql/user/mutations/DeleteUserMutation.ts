@@ -19,8 +19,6 @@ export default mutationWithClientMutationId({
 
         const userTobeDeleted = await User.findOne({ _id: user._id });
 
-        console.log(userTobeDeleted);
-
         await userTobeDeleted.delete();
 
         return {

@@ -1,5 +1,5 @@
 import { GraphQLNonNull, GraphQLString } from "graphql";
-import { mutationWithClientMutationId, toGlobalId } from "graphql-relay";
+import { fromGlobalId, mutationWithClientMutationId, toGlobalId } from "graphql-relay";
 import { Todo } from "../../../models/Todo";
 import { load } from "../TodoLoader";
 import { TodoEdge, TodoType } from "../TodoType";
@@ -15,7 +15,7 @@ export default mutationWithClientMutationId({
             type: new GraphQLNonNull(GraphQLString)
         }
     },
-    mutateAndGetPayload: async ({ id, content }, { user }) => {
+    mutateAndGetPayload: async ({ id: globalId, content }, { user }) => {
 
         if (!user) {
             return {
@@ -23,6 +23,8 @@ export default mutationWithClientMutationId({
                 error: 'Permission denied'
             };
         }
+
+        const { id } = fromGlobalId(globalId);
 
         const todo = await Todo.findOne({ _id: id });
 
