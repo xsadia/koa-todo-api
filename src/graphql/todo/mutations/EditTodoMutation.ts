@@ -51,8 +51,17 @@ export default mutationWithClientMutationId({
     },
     outputFields: {
         todo: {
-            type: TodoType,
-            resolve: ({ todo }) => todo
+            type: TodoEdge,
+            resolve: ({ todo }) => {
+                if (!todo) {
+                    return null;
+                }
+
+                return {
+                    cursor: toGlobalId('Todo', todo._id),
+                    node: todo
+                };
+            }
         },
         error: {
             type: GraphQLString,
