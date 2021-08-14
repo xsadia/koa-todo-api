@@ -1,5 +1,7 @@
 import CompleteTodoMutation from "./CompleteTodoMutation";
+import CreateTodoMutation from "./CreateTodoMutation";
 
 export default {
-    CompleteTodoMutation
+    CompleteTodoMutation,
+    CreateTodoMutation
 };
