@@ -162,6 +162,8 @@ Authorization: bearer + jwt
 ## Access graphiql interface
 `Get /graphql`
 
+`Provide jwt token inside Authorization header for queries/mutations`
+
 # Queries
 
 ## Users 
