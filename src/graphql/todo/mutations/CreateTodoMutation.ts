@@ -1,8 +1,9 @@
 import { GraphQLBoolean, GraphQLNonNull, GraphQLString } from "graphql";
-import { mutationWithClientMutationId } from "graphql-relay";
+import { mutationWithClientMutationId, toGlobalId } from "graphql-relay";
 import { Todo } from "../../../models/Todo";
 import { User } from "../../../models/User";
-import { TodoType } from "../TodoType";
+import { TodoEdge } from "../TodoType";
+import { load } from '../TodoLoader';
 
 export default mutationWithClientMutationId({
     name: 'CreateTodo',
@@ -16,6 +17,7 @@ export default mutationWithClientMutationId({
 
         if (!user) {
             return {
+                todo: null,
                 created: false,
                 error: 'Permission denied'
             };
@@ -35,11 +37,29 @@ export default mutationWithClientMutationId({
         await todoOwner.save();
 
         return {
+            todo,
             created: true,
             error: null
         };
     },
     outputFields: {
+        todoEdge: {
+            type: TodoEdge,
+            resolve: async ({ todo }, _, context) => {
+                if (!todo) {
+                    return null;
+                }
+
+                const globalId = toGlobalId('Todo', todo._id);
+
+                const newTodo = await load(context.user._id, globalId);
+
+                return {
+                    cursor: toGlobalId('Todo', newTodo._id),
+                    node: newTodo
+                };
+            }
+        },
         created: {
             type: GraphQLBoolean,
             resolve: ({ created }) => created
