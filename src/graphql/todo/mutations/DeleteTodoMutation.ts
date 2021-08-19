@@ -20,8 +20,6 @@ export default mutationWithClientMutationId({
 
         const { id } = fromGlobalId(globalId);
 
-        console.log(id);
-
         const todo = await Todo.findOne({ _id: id });
 
         if (!todo) {

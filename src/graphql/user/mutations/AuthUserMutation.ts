@@ -4,6 +4,8 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { User } from "../../../models/User";
 import { authConfig } from '../../../config/authConfig';
 import { sign } from 'jsonwebtoken';
+import { UserType } from "../UserType";
+import { loadSingle } from '../UserLoader';
 
 export default mutationWithClientMutationId({
     name: 'AuthUser',
@@ -43,11 +45,18 @@ export default mutationWithClientMutationId({
         });
 
         return {
+            id: user._id,
             token,
             error: null
         };
     },
     outputFields: {
+        me: {
+            type: UserType,
+            resolve: async ({ id }) => {
+                return await loadSingle(id);
+            }
+        },
         token: {
             type: GraphQLString,
             resolve: ({ token }) => token
