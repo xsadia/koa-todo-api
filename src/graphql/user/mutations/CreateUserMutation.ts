@@ -4,6 +4,8 @@ import { mutationWithClientMutationId } from "graphql-relay";
 import { User } from "../../../models/User";
 import { authConfig } from '../../../config/authConfig';
 import { sign } from 'jsonwebtoken';
+import { UserType } from "../UserType";
+import { loadSingle } from "../UserLoader";
 
 export default mutationWithClientMutationId({
     name: 'CreateUser',
@@ -24,6 +26,7 @@ export default mutationWithClientMutationId({
 
         if (emailExists) {
             return {
+                id: null,
                 token: null,
                 error: 'Email already registered'
             };
@@ -33,6 +36,7 @@ export default mutationWithClientMutationId({
 
         if (usernameExists) {
             return {
+                id: null,
                 token: null,
                 error: 'Username already registered'
             };
@@ -56,11 +60,18 @@ export default mutationWithClientMutationId({
         });
 
         return {
+            id: user._id.toString(),
             token,
             error: null,
         };
     },
     outputFields: {
+        me: {
+            type: UserType,
+            resolve: async ({ id }) => {
+                return await loadSingle(id);
+            }
+        },
         token: {
             type: GraphQLString,
             resolve: ({ token }) => token
