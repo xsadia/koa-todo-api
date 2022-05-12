@@ -3,70 +3,69 @@ import { mutationWithClientMutationId, toGlobalId } from "graphql-relay";
 import { Todo } from "../../../models/Todo";
 import { User } from "../../../models/User";
 import { TodoEdge } from "../TodoType";
-import { load } from '../TodoLoader';
+import { load } from "../TodoLoader";
 
 export default mutationWithClientMutationId({
-    name: 'CreateTodo',
-    description: 'Create Todo Mutation',
-    inputFields: {
-        content: {
-            type: new GraphQLNonNull(GraphQLString)
-        }
+  name: "CreateTodo",
+  description: "Create Todo Mutation",
+  inputFields: {
+    content: {
+      type: new GraphQLNonNull(GraphQLString),
     },
-    mutateAndGetPayload: async ({ content }, { user }) => {
+  },
+  mutateAndGetPayload: async ({ content }, { user }) => {
+    if (!user) {
+      return {
+        todo: null,
+        created: false,
+        error: "Permission denied",
+      };
+    }
 
-        if (!user) {
-            return {
-                todo: null,
-                created: false,
-                error: 'Permission denied'
-            };
+    const todoOwner = await User.findOne({ _id: user._id });
+
+    const todo = new Todo({
+      owner: todoOwner._id,
+      content,
+    });
+
+    await todo.save();
+
+    todoOwner.todos.push(todo);
+
+    await todoOwner.save();
+
+    return {
+      todo,
+      created: true,
+      error: null,
+    };
+  },
+  outputFields: {
+    todoEdge: {
+      type: TodoEdge,
+      resolve: async ({ todo }, _, context) => {
+        if (!todo) {
+          return null;
         }
 
-        const todoOwner = await User.findOne({ _id: user._id });
+        const globalId = toGlobalId("Todo", todo._id);
 
-        const todo = new Todo({
-            owner: todoOwner._id,
-            content
-        });
-
-        await todo.save();
-
-        todoOwner.todos.push(todo);
-
-        await todoOwner.save();
+        const newTodo = await load(context.user._id, globalId);
 
         return {
-            todo,
-            created: true,
-            error: null
+          cursor: toGlobalId("Todo", newTodo._id),
+          node: newTodo,
         };
+      },
     },
-    outputFields: {
-        todoEdge: {
-            type: TodoEdge,
-            resolve: async ({ todo }, _, context) => {
-                if (!todo) {
-                    return null;
-                }
-
-                const globalId = toGlobalId('Todo', todo._id);
-
-                const newTodo = await load(context.user._id, globalId);
-
-                return {
-                    cursor: toGlobalId('Todo', newTodo._id),
-                    node: newTodo
-                };
-            }
-        },
-        created: {
-            type: GraphQLBoolean,
-            resolve: ({ created }) => created
-        },
-        error: {
-            type: GraphQLString,
-            resolve: ({ error }) => error
-        }
-    }
+    created: {
+      type: GraphQLBoolean,
+      resolve: ({ created }) => created,
+    },
+    error: {
+      type: GraphQLString,
+      resolve: ({ error }) => error,
+    },
+  },
 });

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "ts-node-dev --transpile-only --ignore-watch node_modules src/server.ts",
     "build": "tsc",
@@ -13,6 +14,7 @@
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "graphql": "^15.5.1",
+    "graphql-playground-middleware-koa": "^1.6.22",
     "graphql-relay": "^0.8.0",
     "jest": "^27.0.6",
     "jsonwebtoken": "^8.5.1",
@@ -22,7 +24,7 @@
     "koa-cors": "^0.0.16",
     "koa-graphql": "^0.9.0",
     "koa-router": "^10.0.0",
-    "mongoose": "^5.13.5",
+    "mongoose": "^6.3.3",
     "supertest": "^6.1.4"
   },
   "devDependencies": {

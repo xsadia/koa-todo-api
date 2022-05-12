@@ -1,13 +1,13 @@
-import { createServer } from 'http';
-import app from './app';
-import { connectDB } from './mongodb';
-
+import { createServer } from "http";
+import app from "./app";
+import { connectDB } from "./mongodb";
+const PORT = process.env.PORT || 4000;
 const server = createServer(app.callback());
 
 (async () => {
-    await connectDB();
-    console.log('mongo connected');
-    server.listen(process.env.PORT || 4000, () => {
-        console.log('Server running http://localhost:4000');
-    });
+  await connectDB();
+  console.log("mongo connected");
+  server.listen(PORT, () => {
+    console.log(`Server running http://localhost:${PORT}`);
+  });
 })();
