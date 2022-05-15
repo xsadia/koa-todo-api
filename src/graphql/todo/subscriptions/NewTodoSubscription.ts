@@ -12,7 +12,6 @@ export default subscriptionWithClientId({
       type: TodoType,
       resolve: async ({ id }) => {
         const todo = await Todo.findOne({ _id: id }).populate("owner");
-        console.log(todo);
         return todo;
       },
     },

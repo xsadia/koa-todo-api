@@ -7,7 +7,7 @@ import { connectDB } from "./mongodb";
 import { getUser } from "./auth";
 
 type ConnectionParams = {
-  authorization?: string;
+  Authorization?: string;
 };
 
 const PORT = process.env.PORT || 4000;
@@ -23,7 +23,7 @@ const server = createServer(app.callback());
   SubscriptionServer.create(
     {
       onConnect: async (connectionParams: ConnectionParams) => {
-        const { user } = await getUser(connectionParams.authorization);
+        const { user } = await getUser(connectionParams.Authorization);
 
         return {
           user,
