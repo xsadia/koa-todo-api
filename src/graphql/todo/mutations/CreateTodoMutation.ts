@@ -4,6 +4,7 @@ import { Todo } from "../../../models/Todo";
 import { User } from "../../../models/User";
 import { TodoEdge } from "../TodoType";
 import { load } from "../TodoLoader";
+import pubSub, { EVENTS } from "../../../pubSub";
 
 export default mutationWithClientMutationId({
   name: "CreateTodo",
@@ -34,6 +35,8 @@ export default mutationWithClientMutationId({
     todoOwner.todos.push(todo);
 
     await todoOwner.save();
+
+    await pubSub.publish(EVENTS.TODO.NEW, { todoId: todo._id });
 
     return {
       todo,

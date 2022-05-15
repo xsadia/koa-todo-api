@@ -1,8 +1,8 @@
 import Koa, { Context, Request, Response } from "koa";
 import convert from "koa-convert";
-import cors from "koa-cors";
-import Router from "koa-router";
-import graphqlHttp from "koa-graphql";
+import cors from "@koa/cors";
+import Router from "@koa/router";
+import { graphqlHTTP, OptionsData } from "koa-graphql";
 import bodyParser from "koa-bodyparser";
 import koaPlayground from "graphql-playground-middleware-koa";
 import { todoRouter } from "./routes/todo.routes";
@@ -17,33 +17,40 @@ const graphqlSettingsPerReq = async (
   req: Request,
   _: Response,
   ctx: Context
-) => {
+): Promise<OptionsData> => {
   const { user } = ctx;
   return {
     graphiql: false,
     schema,
+    pretty: true,
     context: {
       user,
       req,
     },
-    formatError: (error) => {
-      console.log(error.message);
-      console.log(error.locations);
-      console.log(error.stack);
+    customFormatErrorFn: ({ message, locations, stack }) => {
+      console.log(message);
+      console.log(locations);
+      console.log(stack);
 
       return {
-        message: error.message,
-        locations: error.locations,
-        stack: error.stack,
+        message,
+        locations,
+        stack,
       };
     },
   };
 };
 
-const graphqlServer = graphqlHttp(graphqlSettingsPerReq);
+const graphqlServer = graphqlHTTP(graphqlSettingsPerReq);
 
 router.all("/graphql", graphqlServer);
-router.all("/graphql/playground", koaPlayground({ endpoint: "/graphql" }));
+router.all(
+  "/graphql/playground",
+  koaPlayground({
+    endpoint: "/graphql",
+    subscriptionEndpoint: "/subscriptions",
+  })
+);
 
 app.use(authMiddleWare);
 app.use(bodyParser());
